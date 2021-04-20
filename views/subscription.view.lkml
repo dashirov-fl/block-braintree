@@ -33,14 +33,14 @@ view: subscription_core {
   dimension_group: billing_period_end {
     type: time
     timeframes: [raw, date, month, year]
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.billing_period_end_date) ;;
+    sql: TRY_TO_TIMESTAMP(${TABLE}.billing_period_end_date) ;;
     description: "The end date for the current billing period, regardless of subscription status. Automatic retries on past due subscriptions do not change the start and end dates of the current billing period."
   }
 
   dimension_group: billing_period_start {
     type: time
     timeframes: [raw, date, month, year]
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.billing_period_start_date) ;;
+    sql: TRY_TO_TIMESTAMP(${TABLE}.billing_period_start_date) ;;
     description: "The start date for the current billing period, regardless of subscription status. Automatic retries on past due subscriptions do not change the start and end dates of the current billing period."
   }
 
@@ -86,7 +86,7 @@ view: subscription_core {
   dimension_group: first_billing {
     type: time
     timeframes: [raw, date, month, year]
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.first_billing_date) ;;
+    sql: TRY_TO_TIMESTAMP(${TABLE}.first_billing_date) ;;
     description: "The day the subscription starts billing."
   }
 
@@ -115,7 +115,7 @@ view: subscription_core {
       month,
       year
     ]
-    sql: PARSE_TIMESTAMP("%F",${TABLE}.next_billing_date);;
+    sql: TRY_TO_TIMESTAMP(${TABLE}.next_billing_date);;
     description: "The date that the gateway will try to bill the subscription again. The gateway adjusts this date each time it tries to charge the subscription. If the subscription is past due and you have set your processing options to automatically retry failed transactions, the gateway will continue to adjust this date, advancing it based on the settings that you configured in advanced settings."
   }
 
@@ -141,7 +141,7 @@ view: subscription_core {
       month,
       year
     ]
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.paid_through_date) ;;
+    sql: TRY_TO_TIMESTAMP(${TABLE}.paid_through_date) ;;
     description: "The date through which the subscription has been paid. It is the billing_period_end_date at the time of the last successful transaction. If the subscription is pending (has a future start date), this field is nil."
   }
 

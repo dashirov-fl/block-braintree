@@ -109,7 +109,7 @@ view: transaction_core {
       date,
       month
     ]
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.disbursement_date) ;;
+    sql: TRY_TO_TIMESTAMP( ${TABLE}.disbursement_date) ;;
     description: "The date that the funds associated with this transaction were disbursed. This attribute is only available if you have an eligible merchant account."
   }
 
@@ -439,22 +439,22 @@ view: transaction_core {
   dimension: tender_display {
     type: string
     sql: CASE
-           WHEN ${transaction.payment_instrument_type} = "credit_card" THEN 'Credit Card'
-           WHEN ${transaction.payment_instrument_type} = "masterpass_card" THEN 'MasterPass card'
-           WHEN ${transaction.payment_instrument_type} = "paypal_here" THEN 'Paypal'
-           WHEN ${transaction.payment_instrument_type} = "paypal_account" THEN 'Paypal'
-           WHEN ${transaction.payment_instrument_type} = "venmo_account" THEN 'Venmo'
-           WHEN ${transaction.payment_instrument_type} = "visa_checkout_card" THEN 'Visa Checkout'
-           WHEN ${transaction.payment_instrument_type} = "apple_pay_card" THEN 'Apple Pay'
-           WHEN ${transaction.payment_instrument_type} = "android_pay_card" THEN 'Android Pay'
-           WHEN ${transaction.payment_instrument_type} = "samsung_pay_card" THEN 'Samsung Pay'
-           WHEN ${transaction.payment_instrument_type} = "us_bank_account" THEN 'US Bank'
+           WHEN ${transaction.payment_instrument_type} = 'credit_card' THEN 'Credit Card'
+           WHEN ${transaction.payment_instrument_type} = 'masterpass_card' THEN 'MasterPass card'
+           WHEN ${transaction.payment_instrument_type} = 'paypal_here' THEN 'Paypal'
+           WHEN ${transaction.payment_instrument_type} = 'paypal_account' THEN 'Paypal'
+           WHEN ${transaction.payment_instrument_type} = 'venmo_account' THEN 'Venmo'
+           WHEN ${transaction.payment_instrument_type} = 'visa_checkout_card' THEN 'Visa Checkout'
+           WHEN ${transaction.payment_instrument_type} = 'apple_pay_card' THEN 'Apple Pay'
+           WHEN ${transaction.payment_instrument_type} = 'android_pay_card' THEN 'Android Pay'
+           WHEN ${transaction.payment_instrument_type} = 'samsung_pay_card' THEN 'Samsung Pay'
+           WHEN ${transaction.payment_instrument_type} = 'us_bank_account' THEN 'US Bank'
           ELSE 'Other' END;;
   }
 
   dimension: denied {
     type: yesno
-    sql: ${status} IN ("SettlementDeclined","GatewayRejected","AuthorizationExpired","ProcessorDeclined","Failed") ;;
+    sql: ${status} IN ('SettlementDeclined','GatewayRejected','AuthorizationExpired','ProcessorDeclined','Failed') ;;
   }
 
   dimension: amount_formatted {

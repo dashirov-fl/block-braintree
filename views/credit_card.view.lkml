@@ -146,12 +146,11 @@ view: credit_card_core {
     type: time
     timeframes: [raw, month, year]
     sql:
-    PARSE_TIMESTAMP(
-      "%F"
-      ,CONCAT(
-        IF(CHAR_LENGTH(${expiration_year_raw}) < 4, CONCAT("20",${expiration_year_raw}), ${expiration_year_raw})
-        ,"-", ${expiration_month_raw}
-        ,"-01"
+    TRY_TO_DATE(
+     CONCAT(
+        IFF(LENGTH(${expiration_year_raw}) < 4, CONCAT('20',${expiration_year_raw}),${expiration_year_raw})
+        ,'-', ${expiration_month_raw}
+        ,'-01'
       )
     )
       ;;

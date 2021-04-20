@@ -24,7 +24,7 @@ view: dispute_core {
 
   dimension_group: opened {
     type: time
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.opened_date) ;;
+    sql: TRY_TO_TIMESTAMP(${TABLE}.opened_date::TEXT) ;;
     timeframes: [
       raw,
       date,
@@ -49,16 +49,16 @@ view: dispute_core {
   dimension: reason_display {
     type: string
     sql:
-    CASE WHEN ${reason} = "cancelled_recurring_transaction" THEN "Canceled Recurring Transaction"
-         WHEN ${reason} = "credit_not_processed" THEN "Credit Not Processed"
-         WHEN ${reason} = "duplicate" THEN "Duplicate"
-         WHEN ${reason} = "fraud" THEN "Fraud"
-         WHEN ${reason} = "general" THEN "General"
-         WHEN ${reason} = "invalid_account" THEN "Invalid Account"
-         WHEN ${reason} = "not_recognized" THEN "Not Recognized"
-         WHEN ${reason} = "product_not_received" THEN "Product Not Received"
-         WHEN ${reason} = "product_unsatisfactory" THEN "Product Unsatisfactory"
-         WHEN ${reason} = "transaction_amount_differs" THEN "Transaction Amount Differs"
+    CASE WHEN ${reason} = 'cancelled_recurring_transaction' THEN 'Canceled Recurring Transaction'
+         WHEN ${reason} = 'credit_not_processed' THEN 'Credit Not Processed'
+         WHEN ${reason} = 'duplicate' THEN 'Duplicate'
+         WHEN ${reason} = 'fraud' THEN 'Fraud'
+         WHEN ${reason} = 'general' THEN 'General'
+         WHEN ${reason} = 'invalid_account' THEN 'Invalid Account'
+         WHEN ${reason} = 'not_recognized' THEN 'Not Recognized'
+         WHEN ${reason} = 'product_not_received' THEN 'Product Not Received'
+         WHEN ${reason} = 'product_unsatisfactory' THEN 'Product Unsatisfactory'
+         WHEN ${reason} = 'transaction_amount_differs' THEN 'Transaction Amount Differs'
          ELSE NULL END
         ;;
   }
@@ -84,7 +84,7 @@ view: dispute_core {
   dimension_group: reply_by {
     type: time
     timeframes: [raw, date, month, year]
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.reply_by_date) ;;
+    sql: TRY_TO_TIMESTAMP( ${TABLE}.reply_by_date::TEXT) ;;
     description: "The merchant Reply By date that is referenced in the gateway."
   }
 
@@ -112,7 +112,7 @@ view: dispute_core {
   dimension_group: won {
     type: time
     timeframes: [raw, date, month, year]
-    sql: PARSE_TIMESTAMP("%F", ${TABLE}.won_date) ;;
+    sql: TRY_TO_TIMESTAMP(${TABLE}.won_date::TEXT) ;;
   }
 
   measure: count {
